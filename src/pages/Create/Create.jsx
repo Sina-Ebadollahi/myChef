@@ -20,10 +20,12 @@ export default function Create() {
     const {error, setPostingData} = UseFetchPOST('http://localhost:3001/recipes')
     function handleSubmit(e){
         e.preventDefault();
+        // post object
+        const P = {title, ingredients, method, cookingTime : cookingTime + " minutes"};
         // making data JSON readable to post it
-        setPostingData(JSON.stringify({title, ingredients, method, cookingTime : cookingTime + " minutes"}))
+        setPostingData(JSON.stringify(P))
         // navigating to homePage if form was submitted
-        nav('/')
+        setTimeout(() => nav('/'),1400)
     }
     if(thePostData){
         setPostingData(thePostData)
