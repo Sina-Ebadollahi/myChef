@@ -2,11 +2,11 @@
 import './Recipe.css'
 // hooks
 import { useParams } from 'react-router'
-import UseFetch from '../../hooks/UseFetch';
+import UseFetchGET from '../../hooks/UseFetchGET';
 export default function Recipe() {
     // getting the changable id parameter
     const { id } = useParams();
-    const { data : dataById, isDepending, error} = UseFetch(`http://localhost:3001/Recipes/?id=${id}`)
+    const { data : dataById, isDepending, error} = UseFetchGET(`http://localhost:3001/recipes/?id=${id}`)
     // make it usable
     const firstIndexOfDataById = dataById[0]
     return (

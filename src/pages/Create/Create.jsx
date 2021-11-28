@@ -1,18 +1,32 @@
 // styles
-import './Create.css'
+import './Create.css';
 // hooks
+import UseFetchPOST from '../../hooks/UseFetchPOST'
 import { useRef, useState } from 'react'
-
+import { useNavigate } from 'react-router';
 export default function Create() {
     const [method,setMethod] = useState('');
     const [title,setTitle] = useState('');
     const [cookingTime,setCookingTime] = useState('');
     const [newIngredient,setNewIngredient] = useState('')
     const [ingredients,setIngredients] = useState([])
+    // refering to input of  ingredients
     const ingredientsInput = useRef()
+    // navigating hook
+    const nav = useNavigate();
+    // data to posted to json server
+    const [thePostData, setThePostData] = useState()
+    console.log(thePostData);
+    const {error, setPostingData} = UseFetchPOST('http://localhost:3001/recipes')
     function handleSubmit(e){
         e.preventDefault();
-        console.log(method, title, cookingTime, ingredients);
+        // making data JSON readable to post it
+        setPostingData(JSON.stringify({title, ingredients, method, cookingTime : cookingTime + " minutes"}))
+        // navigating to homePage if form was submitted
+        nav('/')
+    }
+    if(thePostData){
+        setPostingData(thePostData)
     }
     function handleAdd(e){
         e.preventDefault();

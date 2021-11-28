@@ -12,7 +12,7 @@ export default function RecipeList({data : recipes}) {
                     <h3>{item.title}</h3>
                     <p>{item.cookingTime} to make.</p>
                     <div>{item.method.substring(0,100)}</div>
-                    <Link to={`/Recipes/${item.id}`}>Cook This</Link>
+                    <Link to={`/recipe/${item.id}`}>Cook This</Link>
                 </div>
             ))}
             
