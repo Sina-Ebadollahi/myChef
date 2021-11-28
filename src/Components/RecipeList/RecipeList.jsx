@@ -5,6 +5,9 @@ import './RecipeList.css'
 
 
 export default function RecipeList({data : recipes}) {
+    if(recipes.length === 0){
+        return <div className="error">Recipe not found!!!</div>
+    }
     return (
         <div className="recipe-list">
             {recipes.map((item) => (
