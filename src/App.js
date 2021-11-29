@@ -9,11 +9,16 @@ import Create from "./pages/Create/Create";
 import NotFound from "./pages/NotFound/NotFound";
 // Components
 import NavBar from "./Components/NavBar/NavBar";
+import ThemeSelector from "./Components/ThemeSelector/ThemeSelector";
+// hooks
+import UseTheme from "./hooks/UseTheme";
 function App() {
+  const { theme } = UseTheme();
   return (
-    <div className="App">
+    <div className={`App ${theme}`}>
       <BrowserRouter>
         <NavBar />
+        <ThemeSelector />
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/Home" element={<Home />} />

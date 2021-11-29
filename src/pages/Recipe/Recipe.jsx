@@ -3,14 +3,16 @@ import './Recipe.css'
 // hooks
 import { useParams } from 'react-router'
 import UseFetchGET from '../../hooks/UseFetchGET';
+import UseTheme from '../../hooks/UseTheme';
 export default function Recipe() {
+    const { theme } = UseTheme()
     // getting the changable id parameter
     const { id } = useParams();
     const { data : dataById, isDepending, error} = UseFetchGET(`http://localhost:3001/recipes/?id=${id}`)
     // make it usable
     const firstIndexOfDataById = dataById[0]
     return (
-        <div className="recipe">
+        <div className={`recipe ${theme}`}>
             {isDepending && <p className="loading">Loading ...</p>}
             {error && <p className="error">{error}</p>}
             {firstIndexOfDataById && (
