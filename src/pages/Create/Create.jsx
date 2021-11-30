@@ -15,9 +15,6 @@ export default function Create() {
     const ingredientsInput = useRef()
     // navigating hook
     const nav = useNavigate();
-    // data to posted to json server
-    const [thePostData, setThePostData] = useState()
-    console.log(thePostData);
     async function handleSubmit(e){
         e.preventDefault();
         // post object
@@ -28,7 +25,6 @@ export default function Create() {
             // navigating to home after finishing post 
             nav('/')
         }catch(e){
-            console.log(e);
         }
     }
     
