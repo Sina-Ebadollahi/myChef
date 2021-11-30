@@ -1,28 +1,51 @@
 // styles
 import './Recipe.css'
 // hooks
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import UseFetchGET from '../../hooks/UseFetchGET';
 import UseTheme from '../../hooks/UseTheme';
+// firebase
+import { projectFirestore } from '../../firebase/config';
 export default function Recipe() {
+    // states 
+    const [data,setData] = useState(null)
+    const [error,setError] = useState(null)
+    const [isDepending,setIsDepending] = useState(false)
+    // theme hook
     const { theme } = UseTheme()
     // getting the changable id parameter
     const { id } = useParams();
-    const { data : dataById, isDepending, error} = UseFetchGET(`http://localhost:3001/recipes/?id=${id}`)
-    // make it usable
-    const firstIndexOfDataById = dataById[0]
+    // fetching with useEffect hook
+    useEffect(() => {
+        setIsDepending(true)
+        const onSub = projectFirestore.collection('recipes').doc(id).onSnapshot(((doc) => {
+                if(doc.exists){
+                    setIsDepending(false)
+                    setData(doc.data())
+                }else{
+                    setIsDepending(false)
+                    setError('Could not fetch the data!')
+                }
+            }),(err) => {
+                setIsDepending(false)
+                setError(err.message)
+            })
+            
+            return () => onSub();
+    },[id])
+
     return (
         <div className={`recipe ${theme}`}>
             {isDepending && <p className="loading">Loading ...</p>}
             {error && <p className="error">{error}</p>}
-            {firstIndexOfDataById && (
+            {data && (
                 <>
-                 <h2 className="page-title">{firstIndexOfDataById.title}</h2>  
-                 <p>takes {firstIndexOfDataById.cookingTime} to cook.</p>
+                 <h2 className="page-title">{data.title}</h2>  
+                 <p>takes {data.cookingTime} to cook.</p>
                  <ul>
-                     {firstIndexOfDataById.ingredients.map(ing => <li key={ing}>{ing}</li>)}
+                     {data.ingredients.map(ing => (<li key={ing}>{ing}</li>))}
                  </ul>
-                 <p className="method">{firstIndexOfDataById.method}</p>
+                 <p className="method">{data.method}</p>
                 </>
             )}
         </div>

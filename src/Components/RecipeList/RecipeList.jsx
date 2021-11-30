@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import './RecipeList.css'
 // hooks
 import UseTheme from '../../hooks/UseTheme'
+import RecipeDelete from '../RecipeDelete/RecipeDelete';
 
 
 export default function RecipeList({data : recipes}) {
@@ -19,6 +20,7 @@ export default function RecipeList({data : recipes}) {
                     <p>{item.cookingTime} to make.</p>
                     <div>{item.method.substring(0,100)}</div>
                     <Link to={`/recipe/${item.id}`}>Cook This</Link>
+                    <RecipeDelete id={item.id}/>
                 </div>
             ))}
             

@@ -1,9 +1,10 @@
 // styles
 import './Create.css';
 // hooks
-import UseFetchPOST from '../../hooks/UseFetchPOST'
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router';
+// firebase 
+import { projectFirestore } from '../../firebase/config';
 export default function Create() {
     const [method,setMethod] = useState('');
     const [title,setTitle] = useState('');
@@ -17,19 +18,20 @@ export default function Create() {
     // data to posted to json server
     const [thePostData, setThePostData] = useState()
     console.log(thePostData);
-    const {error, setPostingData} = UseFetchPOST('http://localhost:3001/recipes')
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
         // post object
         const P = {title, ingredients, method, cookingTime : cookingTime + " minutes"};
-        // making data JSON readable to post it
-        setPostingData(JSON.stringify(P))
-        // navigating to homePage if form was submitted
-        setTimeout(() => nav('/'),1400)
+        // posting data to firestore
+        try{
+            await projectFirestore.collection('recipes').add(P);
+            // navigating to home after finishing post 
+            nav('/')
+        }catch(e){
+            console.log(e);
+        }
     }
-    if(thePostData){
-        setPostingData(thePostData)
-    }
+    
     function handleAdd(e){
         e.preventDefault();
         const ing = newIngredient.trim().toLowerCase();
